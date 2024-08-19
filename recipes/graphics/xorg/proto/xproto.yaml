@@ -1,17 +1,22 @@
-inherit: [autotools]
+inherit: [meson]
 
 metaEnvironment:
-    PKG_VERSION: "7.0.28"
+    PKG_VERSION: "2023.2"
+    PKG_DESCRIPTION: "X Window System Unified Protocol"
+    PKG_LICENSE: "X11 AND MIT"
 
 checkoutSCM:
-    scm: url
-    url: http://xorg.freedesktop.org/releases/individual/proto/xproto-${PKG_VERSION}.tar.bz2
-    digestSHA1: "d62c43e1b3619ab85732e0113eaa2104920730ac"
-    stripComponents: 1
+    scm: git
+    url: https://gitlab.freedesktop.org/xorg/proto/xorgproto.git
+    branch: master
+    commit: 1c8128d72df22843a2022576850bc5ab5e3a46ea
 
+buildTools: [host-toolchain]
 buildScript: |
-    autotoolsBuild $1
+   mesonBuild $1 --datadir=lib -Dlegacy=true
 
-packageScript: |
-    autotoolsPackageDev
-
+multiPackage:
+   dev:
+      packageScript: mesonPackageDev
+   tgt:
+      packageScript: mesonPackageTgt
