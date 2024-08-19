@@ -1,0 +1,38 @@
+inherit: [autotools, autoconf]
+
+metaEnvironment:
+   PKG_DESCRIPTION: "Font utilities dirs"
+   PKG_LICENSE: "MIT AND BSD-2-Clause"
+   PKG_LICENSE_FILE: "COPYING"
+   PKG_VERSION: "1.4.1"
+
+checkoutSCM:
+   scm: url
+   url: https://www.x.org/pub/individual/font/font-util-${PKG_VERSION}.tar.gz
+   digestSHA256: f029ae80cdd75d89bee7f7af61c21e07982adfb9f72344a158b99f91f77ef5ed
+   stripComponents: 1
+
+depends:
+   - graphics::xorg::proto::xproto-dev
+   - name: graphics::xorg::utils::util-macros
+     use: [tools, result]
+
+buildTools: [xorg-util-macros]
+buildScript: |
+   export ACLOCAL_PATH=${BOB_TOOL_PATHS['xorg-util-macros']}/usr/share/aclocal
+   autotoolsBuild $1
+
+multiPackage:
+   dev:
+      packageScript: autotoolsPackageDev $1 "/usr/share/***"
+      provideTools:
+         font-util: "usr/bin"
+
+   tgt:
+      packageScript: autotoolsPackageTgt $1 "/usr/share/***"
+      provideTools:
+         fontUtil: "usr/bin"
+   tool:
+      packageScript: autotoolsPackageTgt $1 "/usr/share/***"
+      provideTools:
+         fontUtil: "usr/bin"

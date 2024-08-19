@@ -1,0 +1,21 @@
+inherit: [autotools]
+
+metaEnvironment:
+    PKG_DESCRIPTION: "Set of autoconf macros used by the configure.ac scripts in other Xorg modular package"
+    PKG_VERSION: "1.20.0"
+    PKG_LICENSE: "X11 AND MIT"
+
+checkoutSCM:
+    scm: url
+    url: https://www.x.org/pub/individual/util/util-macros-${PKG_VERSION}.tar.gz
+    digestSHA256: 8daf36913d551a90fd1013cb078401375dabae021cb4713b9b256a70f00eeb74
+    stripComponents: 1
+
+buildScript: |
+    autotoolsBuild $1
+
+packageScript: |
+    autotoolsPackageDev $1 "usr/share/***"
+
+provideTools:
+   xorg-util-macros: .

@@ -1,0 +1,17 @@
+inherit: [autotools, autoconf]
+
+depends:
+   - tools:
+         target-toolchain: host-toolchain
+     depends:
+        - name: graphics::xorg::font::font-util-tool
+          use: [tools]
+   - graphics::xorg::proto::xproto-dev
+   - name: graphics::xorg::utils::util-macros
+     use: [tools, result]
+
+buildTools: [xorg-util-macros, fontUtil]
+buildSetup: |
+   ACLOCAL_PATH=${BOB_TOOL_PATHS['xorg-util-macros']}/usr/share/aclocal
+   ACLOCAL_PATH+=":${BOB_TOOL_PATHS['fontUtil']}/../share/aclocal"
+   export ACLOCAL_PATH=${ACLOCAL_PATH}

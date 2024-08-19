@@ -1,0 +1,21 @@
+inherit: [xorg-lib]
+
+metaEnvironment:
+   PKG_LICENSE: "MIT"
+   PKG_VERSION: "0.42.2"
+
+checkoutSCM:
+   scm: url
+   url: https://www.cairographics.org/releases/pixman-${PKG_VERSION}.tar.gz
+   digestSHA256: ea1480efada2fd948bc75366f7c349e1c96d3297d09a3fe62626e38e234a625e
+   stripComponents: 1
+
+buildScript: |
+   autotoolsBuild $1 --disable-gtk \
+      --disable-libpng
+
+multiPackage:
+   dev:
+      packageScript: autotoolsPackageDev
+   tgt:
+      packageScript: autotoolsPackageTgt
