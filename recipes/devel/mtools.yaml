@@ -1,0 +1,24 @@
+inherit: [autotools]
+
+metaEnvironment:
+   PKG_VERSION: "4.0.36"
+
+depends:
+   - libs::libiconv-dev
+   - use: []
+     depends:
+      - libs::libiconv-tgt
+
+checkoutSCM:
+   scm: url
+   url: ${GNU_MIRROR}/mtools/mtools-${PKG_VERSION}.tar.gz
+   digestSHA1: "5febc72730b39873fbefac055c664964a928374e"
+   stripComponents: 1
+
+buildScript: |
+    autotoolsBuild $1
+
+packageScript: |
+   autotoolsPackageTgt
+provideTools:
+   mtools: usr/bin
