@@ -1,0 +1,39 @@
+inherit: [autoconf, autotools]
+
+metaEnvironment:
+   PKG_VERSION: "1.1.42"
+   PKG_LICENSE: "MIT"
+
+depends:
+   - libs::libxml2-dev
+   - use: []
+     depends:
+      - libs::libxml2-tgt
+
+checkoutSCM:
+   scm: git
+   url: https://gitlab.gnome.org/GNOME/libxslt.git
+   tag: "v${PKG_VERSION}"
+   commit: 165219e5a3fc79cc4f529785e6e60f19a4b9222a
+
+checkoutDeterministic: True
+checkoutScript: |
+   autoconfReconfigure
+
+buildTools: [lxml2-tools]
+buildScript: |
+   CPPFLAGS+=" -I ${BOB_DEP_PATHS[libs::libxml2-dev]}/usr/include/libxml2" \
+   autotoolsBuild $1 \
+      --without-crypto \
+      --without-plugins \
+      --without-python
+multiPackage:
+   dev:
+      packageScript: autotoolsPackageDev
+   tgt:
+      packageScript: autotoolsPackageTgt
+   tools:
+      packageScript: autotoolsPackageBin
+      provideTools:
+         libxslt-tools:
+            path: usr/bin
