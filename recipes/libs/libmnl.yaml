@@ -1,0 +1,24 @@
+inherit: [autoconf, autotools]
+
+metaEnvironment:
+  PKG_VERSION: "1.0.5"
+
+checkoutSCM:
+  scm: url
+  url: https://www.netfilter.org/pub/libmnl/libmnl-${PKG_VERSION}.tar.bz2
+  digestSHA256: 274b9b919ef3152bfb3da3a13c950dd60d6e2bcd54230ffeca298d03b40d0525
+  stripComponents: 1
+
+checkoutDeterministic: True
+checkoutScript: |
+  autoconfReconfigure
+
+buildScript: |
+  autotoolsBuild $1
+
+multiPackage:
+  dev:
+    packageScript: autotoolsPackageDev
+
+  tgt:
+    packageScript: autotoolsPackageTgt
