@@ -1,0 +1,24 @@
+inherit: [autotools]
+
+metaEnvironment:
+  PKG_VERSION: "1.8.10"
+
+checkoutSCM:
+  scm: url
+  url: https://www.netfilter.org/projects/iptables/files/iptables-${PKG_VERSION}.tar.xz
+  digestSHA256: 5cc255c189356e317d070755ce9371eb63a1b783c34498fb8c30264f3cc59c9c
+  stripComponents: 1
+
+depends:
+  - kernel::linux-libc-headers
+
+buildVars: [AR, CC]
+buildTools: [bison, flex]
+buildScript: |
+  CFLAGS="${CFLAGS} -I$1"
+  autotoolsBuild $1 \
+    --with-ksource=${BOB_DEP_PATHS['kernel::linux-libc-headers']} \
+    --enable-libipq --disable-nftables
+
+packageScript: |
+  autotoolsPackageTgt
